@@ -1,37 +1,72 @@
-import { type User, type InsertUser } from "@shared/schema";
+import type { 
+  Customer, 
+  LoanApplication, 
+  ConversationSession,
+  ChatMessage 
+} from "@shared/schema";
 import { randomUUID } from "crypto";
 
-// modify the interface with any CRUD methods
-// you might need
-
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Session management
+  getSession(id: string): Promise<ConversationSession | undefined>;
+  createSession(session: ConversationSession): Promise<ConversationSession>;
+  updateSession(id: string, session: Partial<ConversationSession>): Promise<ConversationSession | undefined>;
+
+  // Application management
+  getApplication(id: string): Promise<LoanApplication | undefined>;
+  createApplication(application: LoanApplication): Promise<LoanApplication>;
+  updateApplication(id: string, application: Partial<LoanApplication>): Promise<LoanApplication | undefined>;
+  getApplicationsByCustomer(customerId: string): Promise<LoanApplication[]>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private sessions: Map<string, ConversationSession>;
+  private applications: Map<string, LoanApplication>;
 
   constructor() {
-    this.users = new Map();
+    this.sessions = new Map();
+    this.applications = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getSession(id: string): Promise<ConversationSession | undefined> {
+    return this.sessions.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async createSession(session: ConversationSession): Promise<ConversationSession> {
+    this.sessions.set(session.id, session);
+    return session;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async updateSession(id: string, updates: Partial<ConversationSession>): Promise<ConversationSession | undefined> {
+    const session = this.sessions.get(id);
+    if (!session) return undefined;
+    
+    const updated = { ...session, ...updates };
+    this.sessions.set(id, updated);
+    return updated;
+  }
+
+  async getApplication(id: string): Promise<LoanApplication | undefined> {
+    return this.applications.get(id);
+  }
+
+  async createApplication(application: LoanApplication): Promise<LoanApplication> {
+    this.applications.set(application.id, application);
+    return application;
+  }
+
+  async updateApplication(id: string, updates: Partial<LoanApplication>): Promise<LoanApplication | undefined> {
+    const application = this.applications.get(id);
+    if (!application) return undefined;
+    
+    const updated = { ...application, ...updates, updatedAt: new Date() };
+    this.applications.set(id, updated);
+    return updated;
+  }
+
+  async getApplicationsByCustomer(customerId: string): Promise<LoanApplication[]> {
+    return Array.from(this.applications.values())
+      .filter(app => app.customerId === customerId);
   }
 }
 
