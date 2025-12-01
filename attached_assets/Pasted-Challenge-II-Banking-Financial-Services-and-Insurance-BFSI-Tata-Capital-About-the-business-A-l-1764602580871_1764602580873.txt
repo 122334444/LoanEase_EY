@@ -1,0 +1,48 @@
+Challenge II: Banking, Financial Services, and Insurance (BFSI) Tata Capital
+About the business: A large-scale Non-Banking Financial Company (NBFC) with a presence across
+India oﬀers personal loans, home loans, auto loans and more. To increase revenue from exis8ng
+customers, the NBFC aims to sell personal loans to prosects and its exis8ng customers through a
+web-based chatbot interface.
+The chatbot will serve as a digital sales assistant, where a Master Agent (Agen)c AI
+Controller) coordinates mul8ple Worker AI agents to handle the end-to-end loan sales process —
+from conversa8on and verifica8on to credit evalua8on, and approval and genera8ng a sanc8on
+le_er.
+Problem statement: The NBFC wants to improve its sales success rate for personal loans by using an
+AI-driven conversa8onal approach. The solu8on must simulate a human-like sales process, where
+the Master Agent handles customer conversa8ons, engages customers in a personalized manner and
+collaborates with mul8ple Worker AI agents to complete the loan process.
+Goal: Teams must design an Agen)c AI solu)on where the Master Agent:
+1. 2. 3. Chats with customers landing on the web chatbot via digital ads or marke8ng emails
+Understands the customer's needs and convinces them to take a personal loan
+Orchestrates mul8ple Worker AI agents to complete all tasks—verifica8on, underwri8ng and
+sanc8on le_er genera8on—before closing the chat.
+Key deliverable: A 5-slides PPT showcasing the end-to-end journey from the ini8al chat to sanc8on
+le_er genera8on.
+Agen)c AI roles
+1. Master Agent (main orchestrator):
+o Manages the conversa8on flow with the customer
+o Hands over tasks to Worker Agents and coordinates the workflow
+o Starts and ends the conversa8on
+2. Worker Agents:
+o Sales Agent: Nego8ates loan terms, discusses customer needs, amount, tenure and
+interest rates
+o Verifica)on Agent: Confirms KYC details (phone, address) from a dummy CRM
+server
+o Underwri)ng Agent:
+§ Fetches a dummy credit score (out of 900) from a mock credit bureau API
+§ Validates eligibility:
+§ If the loan amount ≤ pre-approved limit, approve instantly
+§ If ≤ 2× pre-approved limit, request a salary slip upload. Approve only
+if expected EMI ≤ 50% of salary
+§ Reject if > 2× pre-approved limit or credit score < 700
+o Sanc)on LeYer Generator: Generates an automated PDF sanc8on le_er if all
+condi8ons are met
+Data and system assump)ons
+• Synthe)c customer data: Teams must create dummy data for at least 10 customers with
+details like name, age, city, current loan details, credit score and pre-approved personal loan
+limit
+• Oﬀer mart server: A mock server or API hos8ng pre-approved loan oﬀers
+• CRM server: Dummy customer KYC data
+• Credit bureau API: Mock API to fetch credit scores
+• File upload: Simulated salary slip upload (dummy PDF or image)
+• Teams may make any reasonable assump8ons as long as the solu8on feels realis)c
