@@ -4,18 +4,20 @@ import type { Customer, LoanOffer, CreditBureauResponse } from "@shared/schema";
 export const customers: Customer[] = [
   {
     id: "CUST001",
-    name: "Rajesh Kumar",
-    phone: "9876543210",
-    email: "rajesh.kumar@email.com",
+    name: "Vikrant Yadav",
+    phone: "9120044380",
+    email: "vikrantyadav162@gmail.com",
     age: 35,
-    city: "Mumbai",
-    address: "123, Marine Drive, Mumbai, Maharashtra 400020",
+    city: "Varanasi",
+    address: "123, Durgakund, Varanasi, Uttar Pradesh 233321",
     panNumber: "ABCPK1234A",
     aadharNumber: "1234-5678-9012",
     employmentType: "salaried",
     monthlyIncome: 85000,
     employer: "Tata Consultancy Services",
-    existingLoans: [{ type: "Home Loan", amount: 2500000, emi: 22000, remainingTenure: 120 }],
+    existingLoans: [
+      { type: "Home Loan", amount: 2500000, emi: 22000, remainingTenure: 120 },
+    ],
     preApprovedLimit: 500000,
     creditScore: 780,
     kycVerified: true,
@@ -51,7 +53,12 @@ export const customers: Customer[] = [
     employmentType: "self-employed",
     monthlyIncome: 200000,
     existingLoans: [
-      { type: "Business Loan", amount: 1000000, emi: 35000, remainingTenure: 24 },
+      {
+        type: "Business Loan",
+        amount: 1000000,
+        emi: 35000,
+        remainingTenure: 24,
+      },
     ],
     preApprovedLimit: 1000000,
     creditScore: 750,
@@ -70,7 +77,9 @@ export const customers: Customer[] = [
     employmentType: "salaried",
     monthlyIncome: 95000,
     employer: "Amazon India",
-    existingLoans: [{ type: "Car Loan", amount: 500000, emi: 12000, remainingTenure: 36 }],
+    existingLoans: [
+      { type: "Car Loan", amount: 500000, emi: 12000, remainingTenure: 36 },
+    ],
     preApprovedLimit: 600000,
     creditScore: 795,
     kycVerified: true,
@@ -123,7 +132,14 @@ export const customers: Customer[] = [
     aadharNumber: "7890-1234-5678",
     employmentType: "self-employed",
     monthlyIncome: 180000,
-    existingLoans: [{ type: "Personal Loan", amount: 300000, emi: 15000, remainingTenure: 18 }],
+    existingLoans: [
+      {
+        type: "Personal Loan",
+        amount: 300000,
+        emi: 15000,
+        remainingTenure: 18,
+      },
+    ],
     preApprovedLimit: 700000,
     creditScore: 720,
     kycVerified: true,
@@ -177,7 +193,14 @@ export const customers: Customer[] = [
     employmentType: "salaried",
     monthlyIncome: 90000,
     employer: "Cognizant",
-    existingLoans: [{ type: "Education Loan", amount: 400000, emi: 8000, remainingTenure: 48 }],
+    existingLoans: [
+      {
+        type: "Education Loan",
+        amount: 400000,
+        emi: 8000,
+        remainingTenure: 48,
+      },
+    ],
     preApprovedLimit: 550000,
     creditScore: 775,
     kycVerified: true,
@@ -220,14 +243,25 @@ export const customers: Customer[] = [
 ];
 
 // Pre-approved loan offers
-export function generateLoanOffer(customer: Customer, amount?: number): LoanOffer {
+export function generateLoanOffer(
+  customer: Customer,
+  amount?: number,
+): LoanOffer {
   const loanAmount = amount || customer.preApprovedLimit;
-  const interestRate = customer.creditScore >= 800 ? 10.5 :
-                       customer.creditScore >= 750 ? 11.5 :
-                       customer.creditScore >= 700 ? 12.5 : 14.0;
+  const interestRate =
+    customer.creditScore >= 800
+      ? 10.5
+      : customer.creditScore >= 750
+        ? 11.5
+        : customer.creditScore >= 700
+          ? 12.5
+          : 14.0;
   const tenure = 36;
   const monthlyRate = interestRate / 100 / 12;
-  const emi = Math.round(loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure) / (Math.pow(1 + monthlyRate, tenure) - 1));
+  const emi = Math.round(
+    (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
+      (Math.pow(1 + monthlyRate, tenure) - 1),
+  );
   const processingFee = Math.round(loanAmount * 0.02);
 
   return {
@@ -243,15 +277,21 @@ export function generateLoanOffer(customer: Customer, amount?: number): LoanOffe
 }
 
 // Credit bureau mock response
-export function getCreditScore(customerId: string): CreditBureauResponse | null {
-  const customer = customers.find(c => c.id === customerId);
+export function getCreditScore(
+  customerId: string,
+): CreditBureauResponse | null {
+  const customer = customers.find((c) => c.id === customerId);
   if (!customer) return null;
 
   return {
     customerId: customer.id,
     creditScore: customer.creditScore,
-    creditHistory: customer.creditScore >= 750 ? "Excellent" : 
-                   customer.creditScore >= 700 ? "Good" : "Fair",
+    creditHistory:
+      customer.creditScore >= 750
+        ? "Excellent"
+        : customer.creditScore >= 700
+          ? "Good"
+          : "Fair",
     activeLoans: customer.existingLoans.length,
     defaultHistory: false,
   };
@@ -260,13 +300,14 @@ export function getCreditScore(customerId: string): CreditBureauResponse | null 
 // Find customer by phone or email
 export function findCustomer(identifier: string): Customer | undefined {
   const normalized = identifier.toLowerCase().trim();
-  return customers.find(c => 
-    c.phone === normalized || 
-    c.email.toLowerCase() === normalized ||
-    c.name.toLowerCase().includes(normalized)
+  return customers.find(
+    (c) =>
+      c.phone === normalized ||
+      c.email.toLowerCase() === normalized ||
+      c.name.toLowerCase().includes(normalized),
   );
 }
 
 export function getCustomerById(id: string): Customer | undefined {
-  return customers.find(c => c.id === id);
+  return customers.find((c) => c.id === id);
 }
