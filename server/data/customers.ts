@@ -13,7 +13,7 @@ export const customers: Customer[] = [
     panNumber: "ABCPK1234A",
     aadharNumber: "1234-5678-9012",
     employmentType: "salaried",
-    monthlyIncome: 20000,
+    monthlyIncome: 80000,
     employer: "Tata Consultancy Services",
     existingLoans: [
       { type: "Home Loan", amount: 2500000, emi: 22000, remainingTenure: 120 },
