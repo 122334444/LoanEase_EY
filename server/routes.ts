@@ -9,6 +9,7 @@ import {
   getSession2
 } from "./agents/orchestrator";
 import { customers, getCustomerById, getCreditScore, generateLoanOffer } from "./data/customers";
+import { generateSanctionLetterPDF } from "./utils/sanction-letter-pdf";
 import type { SanctionLetter } from "@shared/schema";
 
 const upload = multer({ 
@@ -142,12 +143,13 @@ export async function registerRoutes(
         return res.status(404).json({ error: "Customer not found" });
       }
 
-      // Generate PDF content (simple text-based for demo)
-      const pdfContent = generateSanctionLetterPDF(application, customer);
+      // Generate professional PDF with bank header
+      const pdfBuffer = generateSanctionLetterPDF(application, customer);
       
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", `attachment; filename=sanction-letter-${applicationId}.pdf`);
-      res.send(pdfContent);
+      res.setHeader("Content-Length", pdfBuffer.length);
+      res.send(pdfBuffer);
     } catch (error) {
       console.error("Download error:", error);
       res.status(500).json({ error: "Failed to download sanction letter" });
