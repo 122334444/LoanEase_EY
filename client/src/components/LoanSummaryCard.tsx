@@ -31,7 +31,7 @@ const statusConfig = {
 export function LoanSummaryCard({ application, className }: LoanSummaryCardProps) {
   if (!application) {
     return (
-      <Card className={cn("", className)} data-testid="card-loan-summary-empty">
+      <Card className={cn("bg-accent/50", className)} data-testid="card-loan-summary-empty">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-semibold flex items-center gap-2">
             <IndianRupee className="h-4 w-4 text-primary" />
@@ -51,8 +51,19 @@ export function LoanSummaryCard({ application, className }: LoanSummaryCardProps
   const StatusIcon = status.icon;
   const displayAmount = application.approvedAmount || application.requestedAmount;
 
+  const bgStyles = {
+    approved: "bg-green-500/10 border-green-500/20",
+    sanctioned: "bg-green-500/10 border-green-500/20",
+    rejected: "bg-red-500/10 border-red-500/20",
+    initiated: "bg-accent/50 border-accent",
+    verification: "bg-accent/50 border-accent",
+    underwriting: "bg-accent/50 border-accent",
+  };
+
+  const cardBg = bgStyles[application.status] || "bg-accent/50";
+
   return (
-    <Card className={cn("", className)} data-testid="card-loan-summary">
+    <Card className={cn("transition-colors duration-500", cardBg, className)} data-testid="card-loan-summary">
       <CardHeader className="pb-3 flex flex-row items-center justify-between gap-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
           <IndianRupee className="h-4 w-4 text-primary" />
@@ -73,7 +84,7 @@ export function LoanSummaryCard({ application, className }: LoanSummaryCardProps
           </p>
         </div>
 
-        <Separator />
+        <Separator className="bg-foreground/10" />
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-start gap-2">
@@ -96,7 +107,7 @@ export function LoanSummaryCard({ application, className }: LoanSummaryCardProps
           </div>
         </div>
 
-        <div className="flex items-start gap-2 bg-muted/50 rounded-lg p-3">
+        <div className="flex items-start gap-2 bg-background/50 rounded-lg p-3">
           <Calculator className="h-4 w-4 text-primary mt-0.5" />
           <div className="flex-1">
             <p className="text-xs text-muted-foreground">Monthly EMI</p>
@@ -111,9 +122,9 @@ export function LoanSummaryCard({ application, className }: LoanSummaryCardProps
             <span className="text-muted-foreground">Credit Score</span>
             <span className={cn(
               "font-mono font-semibold",
-              application.creditScore >= 750 ? "text-chart-4" :
-              application.creditScore >= 700 ? "text-chart-5" :
-              "text-destructive"
+              application.creditScore >= 750 ? "text-green-600 dark:text-green-400" :
+              application.creditScore >= 700 ? "text-yellow-600 dark:text-yellow-400" :
+              "text-red-600 dark:text-red-400"
             )} data-testid="text-credit-score">
               {application.creditScore}/900
             </span>
@@ -121,8 +132,8 @@ export function LoanSummaryCard({ application, className }: LoanSummaryCardProps
         )}
 
         {application.rejectionReason && (
-          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
-            <p className="text-sm text-destructive" data-testid="text-rejection-reason">
+          <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+            <p className="text-sm text-red-600 dark:text-red-400" data-testid="text-rejection-reason">
               {application.rejectionReason}
             </p>
           </div>
