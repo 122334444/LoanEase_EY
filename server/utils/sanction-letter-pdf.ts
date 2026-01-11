@@ -3,7 +3,7 @@ import type { Customer } from "../data/customers";
 
 /**
  * Generate a professional PDF sanction letter for Tata Capital
- * Uses basic PDF structure with proper formatting
+ * Uses basic PDF structure with proper formatting9120044380
  */
 export function generateSanctionLetterPDF(
   application: LoanApplication,
