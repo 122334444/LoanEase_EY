@@ -5,7 +5,7 @@ export const customers: Customer[] = [
   {
     id: "CUST001",
     name: "Vikrant Yadav",
-    phone: "9120044380",
+    phone: "1003456",
     email: "vikrantyadav162@gmail.com",
     age: 35,
     city: "Varanasi",

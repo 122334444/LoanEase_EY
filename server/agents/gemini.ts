@@ -187,3 +187,6 @@ Return the intent string only, no explanation.`;
     return "other";
   }
 }
+
+console.log("GEMINI KEY:", process.env.GEMINI_API_KEY);
+
